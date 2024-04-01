@@ -17,7 +17,7 @@ public class RankController {
     @Autowired
     private RankService rankService;
 
-    @GetMapping("/{attribute}/{type}")
+    @GetMapping
     public Result<List<Rank>> getRank(Integer attribute, Integer type) {
         List<Rank> rank = rankService.getRank(attribute, type);
         return Result.success(rank);

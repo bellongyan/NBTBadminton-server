@@ -4,16 +4,16 @@ import lombok.Data;
 
 @Data
 public class Rank {
-    Integer id;
-    Integer rank;
-    String name;
-    String nameChinese;
-    String country;
-    String secondName;
-    String secondNameChinese;
-    String secondCountry;
-    Integer score;
-    Integer steps;
-    Integer attribute;
-    Integer type;
+    private Integer id;
+    private Integer rank;
+    private String name;
+    private String nameChinese;
+    private String country;
+    private String secondName;
+    private String secondNameChinese;
+    private String secondCountry;
+    private Integer score;
+    private Integer steps;
+    private Integer attribute;
+    private Integer type;
 }
