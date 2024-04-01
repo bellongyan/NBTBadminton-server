@@ -1,7 +1,7 @@
 package com.longyan.controller;
 
 import com.longyan.pojo.Result;
-import com.longyan.pojo.UserLogin;
+import com.longyan.pojo.User;
 import com.longyan.service.UserService;
 import com.longyan.utils.JwtUtil;
 import com.longyan.utils.Md5Util;
@@ -24,12 +24,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
+    public Result register(@Pattern(regexp = "^\\S{5,16}$") String userid, @Pattern(regexp = "^\\S{5,16}$") String password,
+                           String nickname, Integer sex, String email) {
         // 查询用户
-        UserLogin u = userService.findByUserName(username);
+        User u = userService.findByUserName(userid);
         // 注册
         if (u == null) {
-            userService.register(username, password);
+            userService.register(userid, password, nickname, sex, email);
             return Result.success();
         } else {
             return Result.error("用户名已被占用");
@@ -37,17 +38,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
+    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String userid, @Pattern(regexp = "^\\S{5,16}$") String password) {
         // 查询用户
-        UserLogin loginUser = userService.findByUserName(username);
+        User user = userService.findByUserName(userid);
 
-        if (loginUser == null) {
+        if (user == null) {
             return Result.error("用户名错误");
         }
 
-        if (Md5Util.getMD5String(password).equals(loginUser.getPassword())) {
+        if (Md5Util.getMD5String(password).equals(user.getPassword())) {
             Map<String, Object> claims = new HashMap<>();
-            claims.put("username", loginUser.getUsername());
+            claims.put("username", user.getUserid());
             String token = JwtUtil.genToken(claims);
             return Result.success(token);
         }
