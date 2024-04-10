@@ -20,7 +20,11 @@ public interface UserMapper {
 
     @Update("update user set nickname=#{nickname}, email=#{email} where userid=#{userid};")
     void update(User user);
-    
+
     @Update("update user set userPic=#{avatarUrl} where userid=#{userid};")
     void updateAvatar(String avatarUrl, String userid);
+
+
+    @Update("update user set password=#{newPwd} where userid=#{userid};")
+    void updatePwd(String newPwd, String userid);
 }

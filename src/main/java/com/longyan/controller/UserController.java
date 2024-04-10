@@ -9,6 +9,7 @@ import com.longyan.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,8 +73,35 @@ public class UserController {
     }
 
     @PatchMapping("/updateAvatar")
-    public Result updateAvatar(@RequestParam @URL String avatarUrl){
+    public Result updateAvatar(@RequestParam @URL String avatarUrl) {
         userService.updateAvatar(avatarUrl);
+        return Result.success();
+    }
+
+    @PatchMapping("/updatePwd")
+    public Result updatePwd(@RequestBody Map<String, String> params) {
+        String oldPwd = params.get("old_pwd");
+        String newPwd = params.get("new_pwd");
+        String rePwd = params.get("re_pwd");
+
+        if (!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(newPwd) || !StringUtils.hasLength(rePwd)) {
+            return Result.error("缺少必要参数");
+        }
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String userid = (String) map.get("username");
+        User loginUser = userService.findByUserName(userid);
+
+        if (!loginUser.getPassword().equals(Md5Util.getMD5String(oldPwd))) {
+            return Result.error("原密码错误");
+        }
+
+        if (!newPwd.equals(rePwd)) {
+            return Result.error("两次密码不相同");
+        }
+
+        userService.updatePwd(newPwd);
+
         return Result.success();
     }
 }
