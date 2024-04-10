@@ -8,4 +8,7 @@ public interface UserService {
 
     //    注册
     void register(String username, String password, String nickname, Integer sex, String email);
+
+    // 更新
+    void update(User user);
 }
