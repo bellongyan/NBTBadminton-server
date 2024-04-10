@@ -5,12 +5,11 @@ import com.longyan.pojo.User;
 import com.longyan.service.UserService;
 import com.longyan.utils.JwtUtil;
 import com.longyan.utils.Md5Util;
+import com.longyan.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,5 +53,14 @@ public class UserController {
         }
 
         return Result.error("密码错误");
+    }
+
+
+    @GetMapping("/userInfo")
+    public Result<User> userInfo() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        User user = userService.findByUserName(username);
+        return Result.success(user);
     }
 }
