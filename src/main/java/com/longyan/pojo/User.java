@@ -21,5 +21,6 @@ public class User {
     @NotEmpty
     @Email
     private String email;
+    private String userPic;
     private Integer isBan;
 }

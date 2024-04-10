@@ -4,8 +4,11 @@ import com.longyan.mapper.UserMapper;
 import com.longyan.pojo.User;
 import com.longyan.service.UserService;
 import com.longyan.utils.Md5Util;
+import com.longyan.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,5 +30,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         userMapper.update(user);
+    }
+
+    @Override
+    public void updateAvatar(String avatarUrl) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String userid = (String) map.get("username") ;
+        userMapper.updateAvatar(avatarUrl, userid);
     }
 }
