@@ -4,6 +4,11 @@ import com.longyan.mapper.CategoryMapper;
 import com.longyan.pojo.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public interface CategoryService {
-    public void add(Category category);
+    void add(Category category);
+
+    // 列表查询
+    List<Category> list();
 }
