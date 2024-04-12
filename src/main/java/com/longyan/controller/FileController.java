@@ -14,13 +14,12 @@ import java.util.UUID;
 public class FileController {
 
     @PostMapping("/upload")
-    public Result<String> upload(MultipartFile file) throws Exception {
+    public Result<String> upload(MultipartFile file, String uuid) throws Exception {
         if (file.isEmpty()) {
             return Result.error("文件上传失败");
         }
 
-        String originalFilename = file.getOriginalFilename();
-        String filename = UUID.randomUUID().toString().replace("-", "") + originalFilename.substring(originalFilename.indexOf("."));
+        String filename = uuid + ".jpg";
 
         String url = AliOssUtils.uploadFile(filename, file.getInputStream());
 
