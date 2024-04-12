@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Article {
     private Integer articleId;
     @NotEmpty
-    @Pattern(regexp = "^\\S{1,10}$")
+    @Pattern(regexp = "^\\S{1,100}$")
     private String articleTitle;
     @NotEmpty
     private String content;
@@ -23,4 +23,7 @@ public class Article {
     private Integer categoryId;
     private String authorId;
     private LocalDateTime createTime;
+    private Integer likeNum;
+    private Integer commentNum;
+    private Integer collectNum;
 }

@@ -73,6 +73,12 @@ public class UserController {
         return Result.success(user);
     }
 
+    @GetMapping("/{userid}")
+    public Result<User> getUserInfoById(@PathVariable String userid) {
+        User user = userService.findByUserName(userid);
+        return Result.success(user);
+    }
+
     @PutMapping("/update")
     public Result update(@RequestBody @Validated User user) {
         userService.update(user);
