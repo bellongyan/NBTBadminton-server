@@ -5,11 +5,65 @@
 <mapper namespace="com.longyan.mapper.ArticleMapper">
     <!--动态sql-->
     <select id="list" resultType="com.longyan.pojo.Article">
-        select * from article
+        select *
+        from article
         <where>
             <if test="categoryId!=null">
                 category_id=#{categoryId}
             </if>
         </where>
+        order by create_time desc
+    </select>
+
+    <select id="get24HoursHotArticles" resultType="com.longyan.pojo.Article">
+        select *
+        from article
+        where like_num > 30
+          and create_time >= date_sub(now(), interval 24 hour)
+        order by create_time desc
+    </select>
+
+    <select id="get7DaysHotArticles" resultType="com.longyan.pojo.Article">
+        select *
+        from article
+        where like_num > 30
+          and create_time >= date_sub(now(), interval 7 day)
+        order by create_time desc
+    </select>
+
+    <select id="get1MonthHotArticles" resultType="com.longyan.pojo.Article">
+        select *
+        from article
+        where like_num > 30
+          and create_time >= date_sub(now(), interval 1 month)
+        order by create_time desc
+    </select>
+
+    <select id="getHotArticles" resultType="com.longyan.pojo.Article">
+        select *
+        from article
+        where like_num > 30
+        order by like_num desc, create_time desc
+    </select>
+
+    <select id="getArticlesByUserid" resultType="com.longyan.pojo.Article">
+        SELECT *
+        FROM article
+        WHERE author_id = #{userid}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="listLike" resultType="com.longyan.pojo.Article">
+        SELECT *
+        FROM article
+        WHERE article_id IN (SELECT article_id FROM article_like WHERE user_id = #{userid})
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="listCollect" resultType="com.longyan.pojo.Article">
+        SELECT *
+        FROM article
+        WHERE article_id IN (SELECT article_id FROM article_collect WHERE user_id = #{userid})
+        ORDER BY create_time DESC
     </select>
 </mapper>
